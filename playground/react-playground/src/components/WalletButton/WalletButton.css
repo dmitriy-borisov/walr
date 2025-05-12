@@ -1,0 +1,11 @@
+.WalletButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.WalletButton img {
+  width: 34px;
+  height: 34px;
+}
