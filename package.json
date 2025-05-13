@@ -9,8 +9,8 @@
     "prepare": "husky",
     "core": "pnpm --filter @walr/core watch",
     "build:core": "pnpm --filter @walr/core build",
-    "react": "pnpm --filter @walr/react watch",
-    "build:react": "pnpm --filter @walr/react build",
+    "react": "pnpm --filter @walr/plugin-react watch",
+    "build:react": "pnpm --filter @walr/plugin-react build",
     "playground:react": "pnpm --filter react-playground dev"
   },
   "keywords": [],

@@ -1,15 +1,11 @@
 import './App.css';
-import {
-  RiftDAppSDKProvider,
-  useRiftDAppSDK,
-  WalletExtension,
-} from '@walr/react';
+import { WalrProvider, useWalr, WalletExtension } from '@walr/plugin-react';
 import { useEffect, useState } from 'react';
 import { WalletButton } from './components/WalletButton';
 
 function Content() {
   const [wallets, setWallets] = useState<WalletExtension[]>([]);
-  const { getInstalledWallets, address } = useRiftDAppSDK();
+  const { getInstalledWallets, address } = useWalr();
 
   const loadWallets = async () => {
     const res = await getInstalledWallets();
@@ -38,8 +34,8 @@ function Content() {
 
 export const App = () => {
   return (
-    <RiftDAppSDKProvider>
+    <WalrProvider>
       <Content />
-    </RiftDAppSDKProvider>
+    </WalrProvider>
   );
 };

@@ -1,1 +1,1 @@
-# Rift dAPP SDK
+# Wallet Runner

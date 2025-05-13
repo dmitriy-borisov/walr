@@ -15,17 +15,17 @@ import {
   type NativeCurrency,
 } from '@walr/core';
 
-interface RiftDAppSDKProviderProps extends React.PropsWithChildren {
+interface WalrProviderProps extends React.PropsWithChildren {
   rdnsPriority?: string[];
   changeAddressStrategy?: 'disconnect' | 'reconnect';
   debug?: boolean;
 }
 
-export function RiftDAppSDKProvider({
+export function WalrProvider({
   children,
   debug,
   changeAddressStrategy = 'reconnect',
-}: RiftDAppSDKProviderProps) {
+}: WalrProviderProps) {
   const [connected, setConnected] = useState<WalletExtension | null>(null);
   const [address, setAddress] = useState<string | null>(null);
   const walletsService = useMemo(() => new WalletsService(), []);

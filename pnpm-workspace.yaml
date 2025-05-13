@@ -2,4 +2,4 @@ packages:
   - packages/*
   - playground/**
 overrides:
-  '@walr/react': link:packages/react
+  '@walr/plugin-react': link:packages/react
