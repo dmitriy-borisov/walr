@@ -33,15 +33,14 @@
     "husky": "9.1.7",
     "lint-staged": "15.5.2",
     "prettier": "3.5.3",
-    "typescript-eslint": "8.32.0"
+    "tsx": "4.19.4",
+    "typescript-eslint": "8.32.0",
+    "@vitejs/release-scripts": "1.5.0"
   },
   "lint-staged": {
     "**/*.{js,ts,tsx}": [
       "eslint --fix"
     ],
     "**/*": "prettier --write --ignore-unknown"
-  },
-  "dependencies": {
-    "@vitejs/release-scripts": "1.5.0"
   }
 }
