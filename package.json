@@ -8,9 +8,10 @@
     "format": "prettier --write .",
     "prepare": "husky",
     "core": "pnpm --filter @walr/core watch",
+    "build": "pnpm -r --filter='./packages/*' run build",
     "build:core": "pnpm --filter @walr/core build",
-    "react": "pnpm --filter @walr/plugin-react watch",
-    "build:react": "pnpm --filter @walr/plugin-react build",
+    "plugin-react": "pnpm --filter @walr/plugin-react watch",
+    "build:plugin-react": "pnpm --filter @walr/plugin-react build",
     "playground:react": "pnpm --filter react-playground dev",
     "ci-publish": "tsx scripts/publishCI.ts"
   },
