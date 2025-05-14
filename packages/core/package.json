@@ -1,7 +1,7 @@
 {
   "name": "@walr/core",
   "private": false,
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "type": "module",
   "main": "./dist/core.js",
   "types": "./dist/main.d.ts",
@@ -18,13 +18,13 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "abitype": "1.0.8",
     "typescript": "5.8.3",
     "vite": "6.3.5",
-    "vite-plugin-dts": "4.5.3",
-    "web3-types": "1.10.0"
+    "vite-plugin-dts": "4.5.3"
   },
   "dependencies": {
-    "ethers": "6.14.0"
+    "ethers": "6.14.0",
+    "abitype": "1.0.8",
+    "web3-types": "1.10.0"
   }
 }
