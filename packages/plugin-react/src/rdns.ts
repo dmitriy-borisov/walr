@@ -1,4 +1,2 @@
-export const POPULAR_RDNS = {
-  METAMASK: 'io.metamask',
-  PHANTOM: 'app.phantom',
-} as const;
+export const RDNS_METAMASK = 'io.metamask';
+export const RDNS_PHANTOM = 'app.phantom';

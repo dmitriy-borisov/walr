@@ -8,6 +8,7 @@ import {
 } from '@walr/core';
 
 export interface BaseContext {
+  isConnecting: boolean;
   getInstalledWallets: () => Promise<WalletExtension[]>;
   connect: (wallet: WalletExtension) => Promise<string>;
   createSmartContract: <T extends Abi>(

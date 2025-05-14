@@ -14,42 +14,50 @@ import {
   type Abi,
   type NativeCurrency,
 } from '@walr/core';
+import { getWalletPriority } from './helpers';
 
 interface WalrProviderProps extends React.PropsWithChildren {
   rdnsPriority?: string[];
   changeAddressStrategy?: 'disconnect' | 'reconnect';
+  onChangeAddress?: (address: string) => void;
   debug?: boolean;
 }
 
 export function WalrProvider({
   children,
   debug,
+  onChangeAddress,
+  rdnsPriority = [],
   changeAddressStrategy = 'reconnect',
 }: WalrProviderProps) {
+  const [isConnecting, setIsConnecting] = useState<boolean>(false);
   const [connected, setConnected] = useState<WalletExtension | null>(null);
   const [address, setAddress] = useState<string | null>(null);
   const walletsService = useMemo(() => new WalletsService(), []);
   const [chain, setChain] = useState<ChainParams | null>(null);
 
   const connect = async (wallet: WalletExtension) => {
+    setIsConnecting(true);
     wallet.provider.removeAllListeners?.('accountsChanged');
     const [address] = await wallet.request({
       method: 'eth_requestAccounts',
       params: [],
     });
 
-    wallet.provider.once('accountsChanged', () => {
+    wallet.provider.once('accountsChanged', async () => {
       switch (changeAddressStrategy) {
         case 'disconnect':
           disconnect();
           return;
         case 'reconnect':
-          connect(wallet);
+          const address = await connect(wallet);
+          onChangeAddress?.(address);
           return;
       }
     });
     setAddress(address);
     setConnected(wallet);
+    setIsConnecting(false);
 
     return address;
   };
@@ -62,7 +70,20 @@ export function WalrProvider({
 
   const getInstalledWallets = async () => {
     const res = await walletsService.loadWallets();
-    return Array.from(res.values());
+    return Array.from(res.values()).sort((a, b) => {
+      const aWeight = getWalletPriority(rdnsPriority, a.info.rdns);
+      const bWeight = getWalletPriority(rdnsPriority, b.info.rdns);
+
+      if (aWeight < bWeight) {
+        return 1;
+      }
+
+      if (aWeight > bWeight) {
+        return -1;
+      }
+
+      return 0;
+    });
   };
 
   const selectChain = async (
@@ -106,6 +127,7 @@ export function WalrProvider({
 
   const contextValues = useMemo<Context>(() => {
     const base: BaseContext = {
+      isConnecting,
       connect,
       disconnect,
       getInstalledWallets,
