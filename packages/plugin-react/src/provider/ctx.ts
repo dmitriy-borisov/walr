@@ -14,7 +14,7 @@ export interface BaseContext {
   createSmartContract: <T extends Abi>(
     address: string,
     abi: T,
-  ) => SmartContractImplementation<T>;
+  ) => Promise<SmartContractImplementation<T>>;
   selectChain: (
     chainParams: ChainParams,
     nativeCurrency: NativeCurrency,
