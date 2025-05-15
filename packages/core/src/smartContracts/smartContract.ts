@@ -82,6 +82,17 @@ const DEFAULT_SMART_CONTRACT_CONTROLLER_OPTIONS: SmartContractControllerOptions 
     loggerName: 'contract',
   };
 
+async function getRunner(
+  runner?: null | ethers.ContractRunner | WalletExtension,
+): Promise<ethers.ContractRunner | null | undefined> {
+  if (!(runner instanceof WalletExtension)) {
+    return runner;
+  }
+
+  const browserProvider = new ethers.BrowserProvider(runner.provider);
+  return await browserProvider.getSigner();
+}
+
 /**
  * Create Interface with methods of smart contract
  * @param address Address of smart contract on chain
@@ -89,7 +100,7 @@ const DEFAULT_SMART_CONTRACT_CONTROLLER_OPTIONS: SmartContractControllerOptions 
  * @param runner Caller of the smart contract
  * @returns Interface with methods of smart contract
  */
-export function createSmartContractController<ABI extends Abi>(
+export async function createSmartContractController<ABI extends Abi>(
   address: string,
   abi: ABI,
   runner?: null | ethers.ContractRunner | WalletExtension,
@@ -101,10 +112,7 @@ export function createSmartContractController<ABI extends Abi>(
     options,
   );
 
-  const ethersProvider = !(runner instanceof WalletExtension)
-    ? runner
-    : new ethers.BrowserProvider(runner.provider);
-
+  const ethersProvider = await getRunner(runner);
   const contract = new SmartContract(address, abi, ethersProvider);
   const logger = new Logger(opts.loggerName, {
     logStyles: 'color:#f17d08;font-weight:bold;',
