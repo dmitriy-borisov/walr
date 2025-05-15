@@ -2,10 +2,11 @@ import './App.css';
 import { WalrProvider, useWalr, WalletExtension } from '@walr/plugin-react';
 import { useEffect, useState } from 'react';
 import { WalletButton } from './components/WalletButton';
+import { USDC } from './USDC';
 
 function Content() {
   const [wallets, setWallets] = useState<WalletExtension[]>([]);
-  const { getInstalledWallets, address } = useWalr();
+  const { connected, getInstalledWallets, address } = useWalr();
 
   const loadWallets = async () => {
     const res = await getInstalledWallets();
@@ -26,8 +27,13 @@ function Content() {
         ))}
       </div>
 
-      <hr />
-      <span>Address: {address}</span>
+      {connected && (
+        <>
+          <hr />
+          <span>Address: {address}</span>
+          {connected && <USDC />}
+        </>
+      )}
     </>
   );
 }

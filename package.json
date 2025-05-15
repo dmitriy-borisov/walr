@@ -12,6 +12,7 @@
     "build:core": "pnpm --filter @walr/core build",
     "plugin-react": "pnpm --filter @walr/plugin-react watch",
     "build:plugin-react": "pnpm --filter @walr/plugin-react build",
+    "dev": "pnpm -r --filter='./packages/*' run watch",
     "playground:react": "pnpm --filter react-playground dev",
     "ci-publish": "tsx scripts/publishCI.ts"
   },

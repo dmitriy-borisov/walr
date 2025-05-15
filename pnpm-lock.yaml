@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@walr/plugin-react': link:packages/react
+  '@walr/plugin-react': link:packages/plugin-react
 
 importers:
 
@@ -98,8 +98,8 @@ importers:
   playground/react-playground:
     dependencies:
       '@walr/plugin-react':
-        specifier: link:../../packages/react
-        version: link:../../packages/react
+        specifier: link:../../packages/plugin-react
+        version: link:../../packages/plugin-react
       react:
         specifier: 19.1.0
         version: 19.1.0
