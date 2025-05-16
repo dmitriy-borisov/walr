@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   ctx,
   type Context,
@@ -15,9 +15,15 @@ import {
   type NativeCurrency,
 } from '@walr/core';
 import { getWalletPriority } from './helpers';
+import {
+  clearSession,
+  getLatestSession,
+  setSession,
+} from '../services/session';
 
 interface WalrProviderProps extends React.PropsWithChildren {
   rdnsPriority?: string[];
+  sessionTime?: number;
   changeAddressStrategy?: 'disconnect' | 'reconnect';
   onChangeAddress?: (address: string) => void;
   debug?: boolean;
@@ -27,6 +33,7 @@ export function WalrProvider({
   children,
   debug,
   onChangeAddress,
+  sessionTime,
   rdnsPriority = [],
   changeAddressStrategy = 'reconnect',
 }: WalrProviderProps) {
@@ -58,7 +65,9 @@ export function WalrProvider({
     setAddress(address);
     setConnected(wallet);
     setIsConnecting(false);
-
+    if (sessionTime) {
+      setSession(wallet.info.rdns);
+    }
     return address;
   };
 
@@ -66,6 +75,7 @@ export function WalrProvider({
     connected?.provider.removeAllListeners?.('accountsChanged');
     setAddress(null);
     setConnected(null);
+    clearSession();
   };
 
   const getInstalledWallets = async () => {
@@ -124,6 +134,32 @@ export function WalrProvider({
       loggerName,
     });
   };
+
+  // Check session
+  useEffect(() => {
+    if (!sessionTime) {
+      return;
+    }
+
+    const latestSession = getLatestSession();
+    if (!latestSession) {
+      return;
+    }
+
+    if (Date.now() > latestSession.timestamp + sessionTime) {
+      return;
+    }
+
+    getInstalledWallets().then((res) => {
+      const latestWallet = res.find(
+        (wallet) => wallet.info.rdns === latestSession.rdns,
+      );
+
+      if (latestWallet) {
+        connect(latestWallet);
+      }
+    });
+  }, []);
 
   const contextValues = useMemo<Context>(() => {
     const base: BaseContext = {
